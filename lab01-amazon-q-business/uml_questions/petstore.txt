@@ -1,0 +1,85 @@
+
+    Documentation for link
+    
+    Description:
+    The API set provided allows for managing pets in a system. The main functionalities include finding pets based on tags and limits, adding new pets with names and tags, and deleting pets by their ID. The API has a 'GET /pets' endpoint that retrieves a list of pets, taking 'tags' and 'limit' as optional query parameters. The response is a '200 OK' with an array of 'Pet' objects containing 'id' fields. There is a 'GET /pets/{id}' endpoint that retrieves a specific pet by its ID, responding with '200 OK' and a 'Pet' object or '404 Not Found' if the pet is not found. The 'POST /pets' endpoint allows adding a new pet, taking a request body with 'name' and 'tag' fields, and responding with '201 Created' and the new 'Pet' object. The 'DELETE /pets/{id}' endpoint deletes a pet by its ID, responding with '204 No Content' on success or '404 Not Found' if the pet is not found. There is an 'Error' response model with 'code' and 'message' fields that may be returned in case of errors.
+    ['- Number of routes/endpoints: 4', "- Number of request data models: 2 ('NewPet' and 'Pet')", "- Number of response data models: 3 ('Error', 'Pet', and 'Response')", "- The 'Pet' model has 2 fields: 'id' (integer) and 'tag' (array of strings)", "- The 'NewPet' model has 2 fields: 'name' (string) and 'tag' (array of strings)", "- The 'Error' model has 2 fields: 'code' (integer) and 'message' (string)", "- The 'Response' model has 1 field: 'id' (integer)"]
+    
+    FAQ:
+    
+    What is the purpose of this API set?
+
+This API set allows for managing pets in a system, enabling operations such as finding, adding, and deleting pets.
+
+How do I retrieve a list of pets?
+
+You can use the 'GET /pets' endpoint to retrieve a list of pets. It accepts optional query parameters 'tags' (array of strings) and 'limit' (integer) to filter the results.
+
+What information is included in the response for the 'GET /pets' endpoint?
+
+The response for the 'GET /pets' endpoint is an array of 'Pet' objects, each containing an 'id' field of type integer.
+
+How do I retrieve details of a specific pet?
+
+You can use the 'GET /pets/{id}' endpoint, replacing '{id}' with the ID of the pet you want to retrieve. It returns a 'Pet' object with the pet's details or a '404 Not Found' error if the pet is not found.
+
+What information is required to add a new pet?
+
+To add a new pet, you need to make a 'POST /pets' request with a request body containing a 'NewPet' object, which has 'name' (string) and 'tag' (array of strings) fields.
+
+What is the response when adding a new pet?
+
+When adding a new pet using the 'POST /pets' endpoint, the response will be '201 Created' along with the newly created 'Pet' object.
+
+How do I delete a pet?
+
+To delete a pet, you can use the 'DELETE /pets/{id}' endpoint, replacing '{id}' with the ID of the pet you want to delete. If the pet is found and deleted successfully, the response will be '204 No Content'.
+
+What happens if I try to delete a non-existent pet?
+
+If you try to delete a pet using the 'DELETE /pets/{id}' endpoint with an ID that does not exist, the response will be '404 Not Found'.
+
+What is the structure of the 'Error' response model?
+
+The 'Error' response model has two fields: 'code' (integer) and 'message' (string). It is used to convey error information in case of any errors during API operation.
+
+Can I filter the list of pets by tags?
+
+Yes, you can filter the list of pets retrieved by the 'GET /pets' endpoint using the 'tags' query parameter, which accepts an array of strings representing the tags you want to filter by.
+
+What is the purpose of the 'limit' query parameter in the 'GET /pets' endpoint?
+
+The 'limit' query parameter in the 'GET /pets' endpoint allows you to specify the maximum number of pet objects to be returned in the response.
+
+Can I update an existing pet's information?
+
+Based on the provided API specification, there is no endpoint for updating an existing pet's information. The API only supports finding, adding, and deleting pets.
+
+What data type is used for pet IDs?
+
+Pet IDs are represented using the 'integer' data type in this API specification.
+
+Can a pet have multiple tags?
+
+Yes, the 'tag' field in both the 'Pet' and 'NewPet' models is an array of strings, allowing a pet to have multiple tags associated with it.
+
+What is the expected response when retrieving a pet by ID that does not exist?
+
+If you try to retrieve a pet by an ID that does not exist using the 'GET /pets/{id}' endpoint, the expected response will be '404 Not Found'.
+
+Is there any rate limiting or throttling applied to the API endpoints?
+
+The provided API specification does not mention any rate limiting or throttling mechanisms applied to the endpoints.
+
+Can I use the API to search for pets based on their names?
+
+No, the provided API specification does not include any endpoints or functionality for searching pets based on their names. The search is only possible based on tags and limits.
+
+What is the purpose of the 'Response' model?
+
+The 'Response' model is used as the response for the 'GET /pets/{id}' endpoint when retrieving a specific pet. It contains a single 'id' field of type integer.
+
+Are there any required fields when adding a new pet?
+
+Based on the provided API specification, the 'name' field is the only required field when adding a new pet using the 'POST /pets' endpoint. The 'tag' field is optional and can be an empty array.
+

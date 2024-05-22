@@ -1,0 +1,85 @@
+
+    Documentation for uspto
+    
+    Description:
+    The USPTO Data Set API (DSAPI) allows public users to discover and search USPTO exported data sets. This API provides two main functionalities: retrieving metadata about available data sets and searching within a specific data set. The API has two main routes: '/' and '/{dataset}/{version}/fields'. The '/' route is a GET endpoint that returns a list of available data sets, including information such as the API key, version number, API URL, and documentation URL for each data set. The '/{dataset}/{version}/fields' route is also a GET endpoint that returns the list of searchable fields for a specific data set, along with general information about the API. The API also has a '/{dataset}/{version}/records' route, which is a POST endpoint used for searching within a specific data set. The request body for this endpoint should include a 'criteria' field with a Lucene Query Syntax string for filtering the data. Optional parameters such as 'start' and 'rows' can be used to control the starting record number and the number of rows returned, respectively. The response for this endpoint is an array of record objects, where each object represents a matching record with its field values. It's important to note that the POST method is used for searching to accommodate complex search criteria without worrying about GET request size limitations or encoding issues.
+    ['- Number of routes/endpoints: 3', '- Number of request data models: 1 (for the POST /records endpoint)', '- Number of response data models: 2 (dataSetList and the response array for the POST /records endpoint)', "- Number of tags: 2 ('metadata' and 'search')", "- Number of servers: 1 (with a scheme variable that can be 'https' or 'http')"]
+    
+    FAQ:
+    
+    What is the USPTO Data Set API?
+
+The USPTO Data Set API (DSAPI) is an API that allows public users to discover and search USPTO exported data sets.
+
+What are the main functionalities of the API?
+
+The API provides two main functionalities: retrieving metadata about available data sets and searching within a specific data set.
+
+How can I get a list of available data sets?
+
+You can use the GET '/' endpoint to retrieve a list of available data sets. The response will include information such as the API key, version number, API URL, and documentation URL for each data set.
+
+How can I get the list of searchable fields for a specific data set?
+
+You can use the GET '/{dataset}/{version}/fields' endpoint to retrieve the list of searchable fields for a specific data set, along with general information about the API. Replace '{dataset}' and '{version}' with the appropriate values for the data set you want to query.
+
+How do I search within a specific data set?
+
+To search within a specific data set, you need to use the POST '/{dataset}/{version}/records' endpoint. The request body should include a 'criteria' field with a Lucene Query Syntax string for filtering the data.
+
+What is the Lucene Query Syntax?
+
+The Lucene Query Syntax is a syntax used for searching and filtering data in the Solr/Lucene search engine. It allows you to specify search criteria using field names, values, ranges, and logical operators. You can find more information about the syntax at https://lucene.apache.org/core/3_6_2/queryparsersyntax.html#Overview.
+
+Can I control the number of records returned in a search?
+
+Yes, you can use the optional 'start' and 'rows' parameters in the POST request body to control the starting record number and the number of rows returned, respectively.
+
+What is the structure of the response for a search?
+
+The response for a search is an array of record objects, where each object represents a matching record with its field values.
+
+Why is the POST method used for searching instead of GET?
+
+The POST method is used for searching to accommodate complex search criteria without worrying about GET request size limitations or encoding issues for the input parameters.
+
+What happens if I provide an invalid data set name or version in the API endpoint?
+
+If you provide an invalid combination of data set name and version in the API endpoint, you will receive a 404 response with a description indicating that the combination is not found in the system or is not published for public consumption.
+
+How can I access the API documentation?
+
+The API documentation can be accessed through the 'apiDocumentationUrl' provided in the response of the GET '/' endpoint for each data set.
+
+Is there a limit on the number of records I can retrieve in a single search?
+
+The YAML file does not explicitly mention a limit on the number of records that can be retrieved in a single search. However, you can use the 'rows' parameter to control the number of rows returned.
+
+What happens if no matching records are found for a search?
+
+If no matching records are found for a given search criteria, the API will return a 404 response with a description indicating that no matching records were found.
+
+Can I use multiple search criteria in a single request?
+
+Yes, you can use multiple search criteria in a single request by combining them using the Lucene Query Syntax. For example, you can use logical operators like AND, OR, and NOT to combine multiple criteria.
+
+What types of data sets are available through the API?
+
+The YAML file does not provide specific details about the types of data sets available through the API. However, it mentions that the API is a generic API that allows USPTO users to make any CSV-based data files searchable through the API.
+
+How can I determine the data types of the fields in a data set?
+
+The YAML file does not provide information about the data types of the fields in a data set. You may need to consult the API documentation or explore the data set programmatically to determine the data types.
+
+Can I sort the search results?
+
+The YAML file does not explicitly mention the ability to sort search results. However, the Lucene Query Syntax may provide sorting capabilities that could be used with this API. You may need to consult the Lucene Query Syntax documentation or the API documentation for more information.
+
+How can I handle errors and exceptions in the API?
+
+The YAML file does not provide explicit information about error handling in the API. However, it does mention that certain error responses, such as 404, are returned in specific cases (e.g., when a data set combination is not found). You may need to consult the API documentation or handle exceptions programmatically in your application code.
+
+Is there a way to paginate search results?
+
+The YAML file does not explicitly mention pagination capabilities for search results. However, you can use the 'start' and 'rows' parameters in the POST request body to control the starting record number and the number of rows returned, which could be used to implement pagination in your application code.
+
