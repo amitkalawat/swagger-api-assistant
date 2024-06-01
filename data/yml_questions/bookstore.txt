@@ -2,94 +2,96 @@
     Documentation for bookstore
     
     Description:
-    The Bookstore API provides a set of endpoints to manage books and authors in a bookstore. It allows users to list all available books and authors, create new books and authors, retrieve details of a specific book or author, update existing books and authors, and delete books and authors.
+    The Bookstore API is a set of endpoints that allow users to manage a collection of books and authors. The API provides functionality to list all available books and authors, retrieve details of a specific book or author, create new books and authors, update existing books and authors, and delete books and authors.
 
-The /books endpoint supports GET, POST, GET /{bookId}, PUT /{bookId}, and DELETE /{bookId} operations. The GET method returns a list of all available books, while the POST method creates a new book. The GET /{bookId} retrieves details of a specific book, the PUT /{bookId} updates an existing book, and the DELETE /{bookId} deletes a book. The request and response data structures for book-related operations are defined by the Book and BookInput models.
+The /books endpoint supports GET and POST requests. GET requests return a list of all books in the store. POST requests are used to create a new book by providing a BookInput object in the request body, containing the title, authorId, description, and published date of the book. The /books/{bookId} endpoint supports GET, PUT, and DELETE requests. GET requests retrieve the details of a specific book identified by the bookId path parameter. PUT requests update an existing book by providing a BookInput object in the request body. DELETE requests delete a book identified by the bookId path parameter.
 
-The /authors endpoint supports GET, POST, GET /{authorId}, PUT /{authorId}, and DELETE /{authorId} operations, which work similarly to the book-related operations but for managing authors instead. The request and response data structures for author-related operations are defined by the Author and AuthorInput models.
+The /authors endpoint supports GET and POST requests. GET requests return a list of all authors. POST requests create a new author by providing an AuthorInput object in the request body, containing the name and biography of the author. The /authors/{authorId} endpoint supports GET, PUT, and DELETE requests. GET requests retrieve the details of a specific author identified by the authorId path parameter. PUT requests update an existing author by providing an AuthorInput object in the request body. DELETE requests delete an author identified by the authorId path parameter.
 
-The API responses use standard HTTP status codes to indicate success or failure, such as 200 for successful GET requests, 201 for successful POST requests, 204 for successful DELETE requests, and appropriate error codes for failed requests. Common errors may include bad request (400), unauthorized (401), not found (404), and internal server error (500).
-    ['- Number of routes/endpoints: 10', '- Number of request data models: 2 (BookInput, AuthorInput)', '- Number of response data models: 2 (Book, Author)', '- Number of data properties in the Book model: 5 (id, title, author, description, published)', '- Number of data properties in the BookInput model: 4 (title, authorId, description, published)', '- Number of data properties in the Author model: 3 (id, name, biography)', '- Number of data properties in the AuthorInput model: 2 (name, biography)']
+The API uses standard HTTP status codes to indicate the success or failure of requests. For example, a 200 OK response indicates a successful GET request, a 201 Created response indicates a successful POST request, and a 204 No Content response indicates a successful DELETE request. Error responses may include appropriate error codes and messages.
+
+Limits and frequent errors may include validation errors for invalid or missing request data, unauthorized access errors, and resource not found errors if an invalid book or author ID is provided.
+    ['- Number of routes/endpoints: 8', '- Number of request data models: 2 (BookInput, AuthorInput)', '- Number of response data models: 2 (Book, Author)', '- Number of GET endpoints: 4', '- Number of POST endpoints: 2', '- Number of PUT endpoints: 2', '- Number of DELETE endpoints: 2']
     
     FAQ:
     
-    What is the Bookstore API?
+    What is the Bookstore API used for?
 
-The Bookstore API is a set of endpoints that allows you to manage books and authors in a bookstore. It provides functionality to list, create, retrieve, update, and delete books and authors.
+The Bookstore API is a set of endpoints that allows users to manage a collection of books and authors. It provides functionality to list, create, retrieve, update, and delete books and authors.
 
-How do I get a list of all available books?
+How do I get a list of all available books in the store?
 
-To get a list of all available books, send a GET request to the /books endpoint. The response will be an array of Book objects containing details of each book.
+To get a list of all available books, send a GET request to the /books endpoint. The response will be an array of Book objects containing the details of each book.
 
-What information is included in the Book object?
+What data is required to create a new book?
 
-The Book object contains the following properties: id (integer), title (string), author (Author object), description (string), and published (date string).
+To create a new book, send a POST request to the /books endpoint with a request body containing a BookInput object. The required fields in the BookInput object are title and authorId.
 
-How do I create a new book?
+How can I update an existing book?
 
-To create a new book, send a POST request to the /books endpoint with a request body containing a BookInput object. The BookInput object should include the title (string), authorId (integer), description (string), and published (date string) properties.
+To update an existing book, send a PUT request to the /books/{bookId} endpoint, replacing {bookId} with the ID of the book you want to update. Include a BookInput object in the request body with the updated data for the book.
 
-What is the purpose of the authorId property in the BookInput object?
+What happens if I try to delete a book that doesn't exist?
 
-The authorId property in the BookInput object is used to associate the new book with an existing author. It should be set to the ID of the author you want to assign to the book.
+If you try to delete a book by sending a DELETE request to /books/{bookId} with an invalid bookId, the API will likely return an error response indicating that the book was not found.
 
-How do I get details of a specific book?
+How do I get a list of all authors?
 
-To get details of a specific book, send a GET request to the /books/{bookId} endpoint, where {bookId} is the ID of the book you want to retrieve. The response will be a Book object containing the details of the requested book.
+To get a list of all authors, send a GET request to the /authors endpoint. The response will be an array of Author objects containing the details of each author.
 
-How do I update an existing book?
+What data is required to create a new author?
 
-To update an existing book, send a PUT request to the /books/{bookId} endpoint, where {bookId} is the ID of the book you want to update. The request body should contain a BookInput object with the updated properties.
+To create a new author, send a POST request to the /authors endpoint with a request body containing an AuthorInput object. The required field in the AuthorInput object is name.
 
-How do I delete a book?
+How can I retrieve the details of a specific author?
 
-To delete a book, send a DELETE request to the /books/{bookId} endpoint, where {bookId} is the ID of the book you want to delete. If successful, the response will have a 204 status code.
+To retrieve the details of a specific author, send a GET request to the /authors/{authorId} endpoint, replacing {authorId} with the ID of the author you want to retrieve.
 
-What endpoints are available for managing authors?
+What happens if I try to update an author with invalid data?
 
-The Bookstore API provides the following endpoints for managing authors: GET /authors (list all authors), POST /authors (create a new author), GET /authors/{authorId} (get details of an author), PUT /authors/{authorId} (update an author), and DELETE /authors/{authorId} (delete an author).
+If you try to update an author by sending a PUT request to /authors/{authorId} with invalid data in the AuthorInput object, the API will likely return an error response indicating the validation errors.
 
-What information is included in the Author object?
+What is the expected response when deleting an author?
 
-The Author object contains the following properties: id (integer), name (string), and biography (string).
+When deleting an author by sending a DELETE request to /authors/{authorId}, the expected successful response is a 204 No Content status code, indicating that the author was deleted successfully.
 
-How do I create a new author?
+How are errors handled in the Bookstore API?
 
-To create a new author, send a POST request to the /authors endpoint with a request body containing an AuthorInput object. The AuthorInput object should include the name (string) and biography (string) properties.
+The Bookstore API uses standard HTTP status codes to indicate the success or failure of requests. Error responses may include appropriate error codes and messages, such as validation errors for invalid or missing request data, unauthorized access errors, and resource not found errors if an invalid book or author ID is provided.
 
-What HTTP status codes are used in the API responses?
+What data types are used for book and author IDs?
 
-The API uses standard HTTP status codes to indicate success or failure. Common status codes include 200 (successful GET request), 201 (successful POST request), 204 (successful DELETE request), 400 (bad request), 401 (unauthorized), 404 (not found), and 500 (internal server error).
-
-How do I handle errors in the API responses?
-
-You should check the HTTP status code in the API response to determine if the request was successful or not. If the status code indicates an error (e.g., 400, 401, 404, 500), you can inspect the response body for more details about the error.
+Both book IDs and author IDs are represented as integers in the API.
 
 Can I filter or sort the list of books or authors?
 
-The Bookstore API does not currently support filtering or sorting of the book and author lists. It simply returns all available books or authors without any additional query parameters.
+The provided API specification does not mention any filtering or sorting capabilities for the list of books or authors. It only supports retrieving the full list.
 
-Is there a limit on the number of books or authors I can create?
+How do I handle date formatting for the published field of a book?
 
-The API documentation does not specify any limits on the number of books or authors that can be created. However, it's possible that the underlying implementation may impose limits based on available storage or other factors.
+The published field of a book is expected to be a string in the date format, as specified by the schema in the API documentation.
 
-How do I handle dates in the API requests and responses?
+Is it possible to associate multiple authors with a single book?
 
-The API uses the date string format for date properties, such as the published property in the Book and BookInput models. You should follow the specified format (e.g., YYYY-MM-DD) when sending or receiving date values.
+Based on the provided API specification, each book is associated with a single Author object. There is no explicit support for associating multiple authors with a single book.
 
-Can I update the author associated with an existing book?
+What is the expected response if I try to create a book with an invalid author ID?
 
-No, the API does not provide a direct way to update the author associated with an existing book. To change the author, you would need to create a new book with the desired author and delete the old book.
+If you try to create a book by sending a POST request to /books with an authorId that does not correspond to an existing author, the API will likely return an error response indicating that the author was not found or that the provided authorId is invalid.
 
-Are there any rate limits or throttling mechanisms in place for the API?
+Can I update the ID of a book or author?
 
-The API documentation does not mention any rate limits or throttling mechanisms. However, it's a common practice for APIs to implement rate limiting to prevent abuse or excessive load.
+Based on the API specification, the ID fields for books and authors are marked as required, which suggests that they cannot be updated after the resource is created. Attempting to update the ID field will likely result in an error.
 
-How do I authenticate and authorize requests to the API?
+How do I handle authentication and authorization for the Bookstore API?
 
-The API documentation does not provide any information about authentication and authorization mechanisms. It's possible that the API may require some form of authentication, such as API keys or OAuth, but the details are not specified in the provided YAML file.
+The provided API specification does not mention any authentication or authorization mechanisms. Typically, APIs would require some form of authentication, such as API keys or bearer tokens, to ensure secure access. The documentation should be consulted for any specific requirements.
 
-Can I perform batch operations, such as creating or updating multiple books or authors in a single request?
+Are there any rate limits or throttling mechanisms in place for the Bookstore API?
 
-The API documentation does not mention any support for batch operations. The endpoints seem to be designed to handle individual book or author resources through separate requests.
+The API specification does not mention any rate limits or throttling mechanisms. However, it is common for APIs to have such mechanisms in place to prevent abuse or excessive load. The documentation should be consulted for any specific limits or policies.
+
+Can I use the Bookstore API to sell or purchase books?
+
+Based on the provided API specification, the Bookstore API does not appear to have any functionality related to selling or purchasing books. It is primarily focused on managing the catalog of books and authors.
 

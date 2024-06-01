@@ -2,100 +2,88 @@
     Documentation for flowerstore
     
     Description:
-    The Flowershop API provides endpoints for managing the operations of a flower shop. It allows users to retrieve a list of available flowers, add new flowers to the shop, fetch details of a specific flower by its ID, and delete a flower by its ID.
-
-The `/flowers` endpoint supports two HTTP methods:
-
-- `GET` retrieves a list of flowers available in the shop. Optional query parameters `type` (array of strings) and `limit` (integer) can be used to filter the results by flower type and limit the number of results, respectively. The response is an array of `Flower` objects.
-
-- `POST` adds a new flower to the shop. The request body should contain a `NewFlower` object with properties `name` (string), `type` (string), and `price` (float). The response is the created `Flower` object, which includes an `id` property.
-
-The `/flowers/{id}` endpoint also supports two HTTP methods:
-
-- `GET` retrieves the details of a specific flower by its ID. The `id` path parameter is required and should be an integer. The response is a `Flower` object. If the flower is not found, an error response is returned.
-
-- `DELETE` deletes a flower by its ID. The `id` path parameter is required and should be an integer. A successful response has a status code of 204 (No Content). If the flower is not found, an error response is returned.
-
-Error responses are represented by an `Error` object, which includes a `code` (integer) and a `message` (string) describing the error.
-
-Note: The API may have limits on the number of requests or data sizes, and frequent errors may occur when these limits are exceeded or when invalid data is provided.
-    ['- Number of routes/endpoints: 3', '- Number of request data models: 1 (NewFlower)', '- Number of response data models: 2 (Flower, Error)', '- Number of HTTP methods supported: 4 (GET, POST, GET, DELETE)']
+    The Flowershop API provides a set of endpoints for managing flowers available in a flower shop. The `/flowers` endpoint allows retrieving a list of all available flowers, optionally filtering by type and limiting the number of results. It also supports adding a new flower to the shop by sending a POST request with the flower details. The `/flowers/{id}` endpoint retrieves a specific flower by its ID and allows deleting a flower by sending a DELETE request with the flower ID. The API uses standard HTTP status codes for responses, including 200 for successful requests, 204 for successful deletions, and default error responses with an error code and message. Request and response data structures are defined for flowers, new flowers, and errors.
+    ['- Number of routes/endpoints: 3', '- Number of request data models: 2 (NewFlower, Flower)', '- Number of response data models: 2 (Flower, Error)', '- Number of API operations: 4 (findFlowers, addFlower, findFlowerById, deleteFlower)']
     
     FAQ:
     
-    What is the Flowershop API?
+    What is the purpose of the Flowershop API?
 
-The Flowershop API is a set of endpoints that allow you to manage the operations of a flower shop, such as retrieving a list of available flowers, adding new flowers, fetching details of a specific flower, and deleting flowers.
+The Flowershop API allows managing the flowers available in a flower shop. It provides endpoints for retrieving a list of flowers, adding new flowers, fetching details of a specific flower, and deleting flowers.
 
-How do I get a list of available flowers?
+How can I get a list of all available flowers?
 
-To get a list of available flowers, send a GET request to the `/flowers` endpoint. The response will be an array of `Flower` objects.
+You can send a GET request to the `/flowers` endpoint to retrieve a list of all available flowers. The response will be an array of `Flower` objects.
 
 Can I filter the list of flowers by type?
 
-Yes, you can filter the list of flowers by type using the `type` query parameter when sending a GET request to the `/flowers` endpoint. The `type` parameter accepts an array of strings representing the flower types you want to filter by.
+Yes, you can filter the list of flowers by type by including the `type` query parameter in the GET request to the `/flowers` endpoint. The `type` parameter accepts an array of strings representing the flower types you want to include.
 
-How do I limit the number of results returned?
+How can I limit the number of flowers returned in the response?
 
-You can use the `limit` query parameter when sending a GET request to the `/flowers` endpoint to limit the number of results returned. The `limit` parameter accepts an integer value representing the maximum number of results you want to retrieve.
+You can limit the number of flowers returned in the response by including the `limit` query parameter in the GET request to the `/flowers` endpoint. The `limit` parameter accepts an integer value representing the maximum number of results to return.
 
-How do I add a new flower to the shop?
+What is the data structure for a flower object?
 
-To add a new flower to the shop, send a POST request to the `/flowers` endpoint with a request body containing a `NewFlower` object. The `NewFlower` object should have `name` (string), `type` (string), and `price` (float) properties. The response will be the created `Flower` object, including an `id` property.
+The `Flower` object has the following properties: `id` (integer), `name` (string), `type` (string), and `price` (number).
 
-What information is included in the `Flower` object?
+How can I add a new flower to the shop?
 
-The `Flower` object contains information about a flower, including `id` (integer), `name` (string), `type` (string), and `price` (float).
+To add a new flower, send a POST request to the `/flowers` endpoint with a request body containing a `NewFlower` object. The `NewFlower` object should have the `name`, `type`, and `price` properties set.
 
-How do I get details of a specific flower?
+What is the response when adding a new flower?
 
-To get details of a specific flower, send a GET request to the `/flowers/{id}` endpoint, replacing `{id}` with the ID of the flower you want to retrieve. The response will be a `Flower` object representing the requested flower.
+If the new flower is added successfully, the response will have a status code of 200 and the response body will contain the `Flower` object representing the added flower, including the newly assigned `id`.
 
-How do I delete a flower from the shop?
+How can I get details of a specific flower?
 
-To delete a flower from the shop, send a DELETE request to the `/flowers/{id}` endpoint, replacing `{id}` with the ID of the flower you want to delete. A successful response will have a status code of 204 (No Content).
+To get details of a specific flower, send a GET request to the `/flowers/{id}` endpoint, replacing `{id}` with the ID of the flower you want to retrieve. The response will contain the `Flower` object for the specified ID.
 
-What happens if I try to retrieve or delete a flower that doesn't exist?
+What happens if I try to get details of a flower that doesn't exist?
 
-If you try to retrieve or delete a flower that doesn't exist, the API will return an error response represented by an `Error` object, which includes a `code` (integer) and a `message` (string) describing the error.
+If you try to get details of a flower that doesn't exist, the API will return a default error response containing an `Error` object with an error code and message.
 
-What is the structure of the `Error` object?
+How can I delete a flower from the shop?
 
-The `Error` object has two required properties: `code` (integer) and `message` (string). The `code` property represents an error code, and the `message` property provides a human-readable description of the error.
+To delete a flower, send a DELETE request to the `/flowers/{id}` endpoint, replacing `{id}` with the ID of the flower you want to delete.
 
-Are there any limits on the number of requests I can make?
+What is the response when deleting a flower?
 
-The API documentation doesn't specify any limits on the number of requests, but it's possible that the API may have rate limits or other restrictions in place to prevent abuse or overload. If you encounter any issues related to request limits, you should consult the API provider's documentation or contact their support.
+If the flower is deleted successfully, the response will have a status code of 204 (No Content) and no response body. If there is an error, the API will return a default error response containing an `Error` object.
 
-Can I use the API without authentication?
+What is the structure of the `Error` object in the response?
 
-The API documentation doesn't mention any authentication requirements, but it's possible that authentication may be required in a production environment. You should consult the API provider's documentation or contact their support for more information about authentication and authorization.
+The `Error` object has two properties: `code` (integer) and `message` (string). The `code` represents an error code, and the `message` provides a brief description of the error.
 
-What data formats does the API support for requests and responses?
+Are there any limits on the requests I can make to the API?
 
-According to the API specification, the API supports JSON format for both requests and responses. The request body for adding a new flower should be in JSON format, and the responses for fetching flowers or error messages are also in JSON format.
+The provided YAML file does not mention any specific limits on the number of requests or rate limiting. However, it's common for APIs to have such limits in place to prevent abuse or overloading the server.
 
-What HTTP methods are supported by the API?
+How can I authenticate my requests to the Flowershop API?
 
-The Flowershop API supports four HTTP methods: GET, POST, GET, and DELETE. The `/flowers` endpoint supports GET and POST methods, while the `/flowers/{id}` endpoint supports GET and DELETE methods.
+The provided YAML file does not include any information about authentication or authorization mechanisms. It's possible that the API requires some form of authentication, such as API keys or tokens, but the details are not specified in the given YAML.
 
-Can I update an existing flower in the shop?
+What HTTP methods are supported by the Flowershop API?
 
-The API specification doesn't include an endpoint or method for updating an existing flower. If you need to update a flower's information, you may need to first delete the existing flower and then add a new flower with the updated information.
+Based on the provided YAML file, the Flowershop API supports the following HTTP methods: GET for retrieving flowers, POST for adding new flowers, and DELETE for deleting flowers.
 
-How do I handle errors returned by the API?
+Can I update the details of an existing flower?
 
-When the API encounters an error, it will return an `Error` object in the response. This object contains a `code` (integer) property representing the error code and a `message` (string) property providing a human-readable description of the error. You should handle these errors appropriately in your application code.
+The provided YAML file does not include an endpoint or operation for updating the details of an existing flower. The API only supports retrieving, adding, and deleting flowers.
 
-Can I use the API for commercial purposes?
+What is the purpose of the `servers` section in the YAML file?
 
-The API documentation doesn't specify any restrictions on commercial use, but you should review the terms of service provided by the API provider to ensure compliance with any usage policies or licensing agreements.
+The `servers` section in the YAML file specifies the base URL for the API endpoints. In this case, the base URL is `https://api.example.com/v1`.
 
-Is there a way to test the API before integrating it into my application?
+How can I get information about the API license and terms of service?
 
-The API documentation doesn't mention any testing or sandbox environments, but many API providers offer tools or environments for testing and exploring their APIs. You should check with the API provider for any available testing resources or tools.
+The `info` section of the YAML file provides information about the API's license and terms of service. The `license` object contains the license name (`Apache 2.0`) and a URL to the license text. The `termsOfService` field provides a URL to the API's terms of service.
 
-How can I get support or report issues with the API?
+What is the purpose of the `components` section in the YAML file?
 
-According to the API specification, you can contact the API support team by sending an email to support@example.com or by visiting the support website at https://example.com/support. You can also review the terms of service at https://example.com/terms for more information.
+The `components` section in the YAML file defines reusable data structures and models used throughout the API specification. In this case, it defines the `Flower`, `NewFlower`, and `Error` data models.
+
+Can I use this API for commercial purposes?
+
+The provided YAML file does not include any information about the intended usage or restrictions of the Flowershop API. You would need to consult the API's terms of service or contact the API provider for clarification on commercial usage and licensing.
 

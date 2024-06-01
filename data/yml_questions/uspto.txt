@@ -2,108 +2,90 @@
     Documentation for uspto
     
     Description:
-    The USPTO Data Set API (DSAPI) is a RESTful API that allows public users to discover and search USPTO exported data sets. The API consists of two main functionalities:
+    The USPTO Data Set API (DSAPI) is a RESTful API that allows public users to discover and search USPTO exported data sets. The API consists of two main endpoints: a GET endpoint for retrieving metadata about available data sets and their searchable fields, and a POST endpoint for performing searches on a specific data set based on specified criteria.
 
-1. Metadata endpoints: These endpoints provide information about the available data sets and their searchable fields.
+The GET endpoint (/{dataset}/{version}/fields) retrieves a list of searchable field names for a given data set and version. For example, calling /oa_citations/v1/fields will return an array of field names that can be used to query the 'oa_citations' data set. This endpoint helps users understand the structure and searchable properties of a data set before performing actual searches.
 
-  - GET /: Returns a list of available data sets with details such as API key, version number, URL for searchable fields, and API documentation URL.
-  - GET /{dataset}/{version}/fields: Returns the list of searchable fields for a given data set and version.
+The POST endpoint (/{dataset}/{version}/records) allows users to search a data set by specifying a set of search criteria using the Lucene Query Syntax. The request body should include the 'criteria' property with the desired search query, as well as optional 'start' and 'rows' properties to control the starting record number and number of results to return. The response contains an array of matching records, where each record is an object with key-value pairs representing the data set's fields and their corresponding values.
 
-Example request: GET /oa_citations/v1/fields
-Example response: A JSON string containing an array of searchable field names.
-
-2. Search endpoint: This endpoint allows users to search and retrieve data from a specific data set based on provided search criteria.
-
-  - POST /{dataset}/{version}/records: Performs a search on the specified data set and version using the provided search criteria. The search criteria follow the Lucene Query Syntax.
-
-Example request body:
-criteria=patent_number:9959235&start=0&rows=10
-This searches for records with the patent number '9959235' in the 'oa_citations' data set, starting from the first record and returning a maximum of 10 results.
-
-The response is a JSON array containing the matching records, where each record is an object with key-value pairs representing the field names and their corresponding values.
-
-Limits and errors: The GET requests have a character limit due to URL length restrictions. The POST request body size may also be limited. If a dataset or version is not found, a 404 error is returned.
-    ['- Number of routes/endpoints: 3', '- Number of request data models: 1 (for the POST /records request)', '- Number of response data models: 2 (dataSetList and array of record objects)', '- Number of data sets mentioned: 2 (oa_citations and cancer_moonshot)', '- Number of servers/hosts: 1 (developer.uspto.gov)']
+It's important to note that the POST request uses the application/x-www-form-urlencoded content type for the request body, which may impose size limitations on the search criteria. Additionally, the API may return a 404 error if the specified data set or version is not found or published for public consumption.
+    ['- Number of routes/endpoints: 3', '- Number of request data models: 1 (the request body for the POST /records endpoint)', '- Number of response data models: 2 (the response models for the GET / and GET /fields endpoints)', '- Number of data sets mentioned in the example: 2 (oa_citations and cancer_moonshot)', '- Number of API versions mentioned in the example: 1 (v1)']
     
     FAQ:
     
-    What is the USPTO Data Set API?
+    What is the USPTO Data Set API (DSAPI)?
 
-The USPTO Data Set API (DSAPI) is a RESTful API that allows public users to discover and search USPTO exported data sets.
+The USPTO Data Set API is a RESTful API that allows public users to discover and search USPTO exported data sets. It provides a way to programmatically access and query various data sets published by the USPTO.
 
 How do I get a list of available data sets?
 
-You can send a GET request to the root endpoint (/) to get a list of available data sets along with their API keys, version numbers, field URLs, and documentation URLs.
+You can send a GET request to the root endpoint (/) to retrieve a list of available data sets, along with their API keys, version numbers, and URLs for accessing metadata and documentation.
 
-How do I find out the searchable fields for a data set?
+How do I find out what fields are searchable in a particular data set?
 
-Send a GET request to the /{dataset}/{version}/fields endpoint, replacing {dataset} and {version} with the specific data set and version you want. The response will contain a list of searchable field names for that data set.
+You can send a GET request to the /{dataset}/{version}/fields endpoint, replacing {dataset} and {version} with the appropriate values for the data set you're interested in. This will return a list of searchable field names for that data set and version.
 
-How do I search data in a specific data set?
+What is the format for specifying search criteria when querying a data set?
 
-To search data in a data set, send a POST request to the /{dataset}/{version}/records endpoint with the search criteria in the request body. The search criteria should follow the Lucene Query Syntax.
+The API uses the Lucene Query Syntax for specifying search criteria. You can construct queries using field names, values, ranges, and boolean operators. For example, 'title:patent' would search for records where the 'title' field contains the word 'patent'.
 
-What is the format of the search criteria?
+How do I perform a search on a data set?
 
-The search criteria should be in the format 'propertyName:value', 'propertyName:[num1 TO num2]' for numeric ranges, and 'propertyName:[yyyyMMdd TO yyyyMMdd]' for date ranges. Multiple criteria can be combined using commas.
+You can send a POST request to the /{dataset}/{version}/records endpoint, replacing {dataset} and {version} with the appropriate values for the data set you want to search. The request body should include the 'criteria' property with your search query, and optionally the 'start' and 'rows' properties to control the result set.
 
-How do I specify the starting record and number of results to return?
+What is the format of the response when searching a data set?
 
-In the POST request body for searching, you can include the 'start' parameter to specify the starting record number (default is 0), and the 'rows' parameter to specify the maximum number of results to return (default is 100).
+The response will be a JSON array, where each element is an object representing a matching record. The keys of each object correspond to the field names in the data set, and the values are the field values for that particular record.
 
-What is the response format for search results?
+What happens if I specify an invalid data set or version in the request URL?
 
-The search results are returned as a JSON array, where each element is an object representing a record. Each record object contains key-value pairs for all the fields and their corresponding values.
+If the combination of data set name and version is not found or not published for public consumption, the API will return a 404 error response.
 
-How do I handle errors or missing data sets?
+Are there any limitations on the size of the search criteria I can specify in the POST request?
 
-If a data set or version is not found, the API will return a 404 error with a descriptive message. You should handle these errors in your client application accordingly.
+Yes, since the API expects the request body to be in application/x-www-form-urlencoded format, there may be size limitations on the search criteria you can specify. Complex or large queries may need to be split into multiple requests.
 
-Are there any limits on the request or response sizes?
+How can I learn more about the Lucene Query Syntax used for specifying search criteria?
 
-Yes, there are limits on the request and response sizes. The GET requests have a character limit due to URL length restrictions, and the POST request body size may also be limited. Large responses may be truncated or return a partial result set.
+The API documentation provides a link to the Lucene Query Syntax documentation: https://lucene.apache.org/core/3_6_2/queryparsersyntax.html#Overview. You can refer to this documentation for more details and examples on constructing search queries.
 
-Can I use this API for commercial purposes?
+Can I search for ranges of values in a particular field?
 
-The USPTO Data Set API is a public API, and there are no restrictions mentioned regarding commercial use. However, you should review the terms of use and any applicable licenses or policies provided by USPTO.
+Yes, the Lucene Query Syntax supports searching for ranges of values using the square bracket notation. For example, 'publicationDate:[20200101 TO 20201231]' would search for records where the 'publicationDate' field falls within the specified date range.
 
-How do I authenticate with the API?
+What happens if my search query doesn't match any records in the data set?
 
-The API documentation does not mention any authentication or authorization requirements. It appears to be a public API that does not require authentication.
+If there are no matching records for the specified search criteria, the API will return a 404 error response with the message 'No matching record found for the given criteria'.
 
-Can I sort or filter the search results?
+How can I control the number of results returned by a search query?
 
-The API documentation does not provide information about sorting or filtering search results. You may need to handle sorting and filtering on the client side after receiving the search results.
+You can specify the 'start' and 'rows' properties in the request body to control the starting record number and the maximum number of rows to return, respectively. If you don't specify these values, the API will use the default values of 0 for 'start' and 100 for 'rows'.
 
-How can I get more details or documentation about a specific data set?
+Is there a way to get the total number of records in a data set?
 
-The response from the GET / endpoint includes a 'apiDocumentationUrl' field for each data set, which provides a URL to the API console or documentation for that specific API.
+Yes, when you perform a search with the default values (start=0, rows=100), the response will include a 'numFound' attribute that tells you the total number of records available in the data set.
 
-Are there any rate limits or throttling enforced by the API?
+Can I combine multiple search criteria in a single query?
 
-The API documentation does not mention any rate limits or throttling policies. However, it is generally a good practice to implement reasonable rate limiting in your client application to avoid overloading the API servers.
+Yes, the Lucene Query Syntax allows you to combine multiple search criteria using boolean operators like AND, OR, and NOT. For example, 'title:patent AND inventor:smith' would search for records where the title contains 'patent' and the inventor is 'smith'.
 
-Can I use wildcards or regular expressions in the search criteria?
+How can I handle errors or unexpected responses from the API?
 
-The API documentation mentions that the search criteria follows the Lucene Query Syntax, which supports wildcards and regular expressions. Refer to the Lucene Query Syntax documentation for more details.
+The API documentation outlines the possible error responses, such as 404 for not found resources. It's important to implement proper error handling in your client code to gracefully handle and respond to different error scenarios.
 
-How do I handle special characters or encode the search criteria?
+Is there a way to test or explore the API before integrating it into my application?
 
-When sending search criteria in the POST request body, you may need to properly encode or escape special characters according to the application/x-www-form-urlencoded content type. Refer to the documentation or coding guidelines for your programming language or framework.
+Yes, the API documentation provides URLs for an API console (e.g., https://developer.uspto.gov/ds-api-docs/index.html?url=https://developer.uspto.gov/ds-api/swagger/docs/oa_citations.json) where you can interact with the API endpoints and test various requests and responses.
 
-Can I search across multiple data sets simultaneously?
+Can I use this API to modify or update data sets?
 
-The API documentation does not mention the ability to search across multiple data sets in a single request. You may need to send separate requests for each data set you want to search.
+No, the USPTO Data Set API is a read-only API that allows you to search and retrieve data from published data sets. It does not provide functionality for modifying or updating the underlying data.
 
-Are there any sample code or client libraries available for this API?
+Are there any rate limits or usage restrictions for the API?
 
-The API documentation does not provide any sample code or client libraries. You may need to write your own client code or utilize third-party libraries for consuming RESTful APIs in your preferred programming language.
+The API documentation does not mention any specific rate limits or usage restrictions. However, it's generally a good practice to implement responsible usage patterns and avoid overwhelming the API with excessive requests.
 
-How often are the data sets updated or refreshed?
+How can I stay updated with any changes or new features in the API?
 
-The API documentation does not provide information about the update frequency or refresh schedule for the data sets. You may need to check the documentation or contact USPTO for more details on data set update schedules.
-
-Can I contribute or suggest improvements to the API or data sets?
-
-The API documentation does not mention any mechanisms for contributing or suggesting improvements. You may need to check the USPTO website or contact them directly for information on how to provide feedback or suggestions.
+The API documentation provides contact information (name, URL, and email) for the Open Data Portal team at the USPTO. You can reach out to them for any updates, changes, or new features related to the Data Set API.
 
