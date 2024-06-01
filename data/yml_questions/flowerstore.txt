@@ -1,0 +1,101 @@
+
+    Documentation for flowerstore
+    
+    Description:
+    The Flowershop API provides endpoints for managing the operations of a flower shop. It allows users to retrieve a list of available flowers, add new flowers to the shop, fetch details of a specific flower by its ID, and delete a flower by its ID.
+
+The `/flowers` endpoint supports two HTTP methods:
+
+- `GET` retrieves a list of flowers available in the shop. Optional query parameters `type` (array of strings) and `limit` (integer) can be used to filter the results by flower type and limit the number of results, respectively. The response is an array of `Flower` objects.
+
+- `POST` adds a new flower to the shop. The request body should contain a `NewFlower` object with properties `name` (string), `type` (string), and `price` (float). The response is the created `Flower` object, which includes an `id` property.
+
+The `/flowers/{id}` endpoint also supports two HTTP methods:
+
+- `GET` retrieves the details of a specific flower by its ID. The `id` path parameter is required and should be an integer. The response is a `Flower` object. If the flower is not found, an error response is returned.
+
+- `DELETE` deletes a flower by its ID. The `id` path parameter is required and should be an integer. A successful response has a status code of 204 (No Content). If the flower is not found, an error response is returned.
+
+Error responses are represented by an `Error` object, which includes a `code` (integer) and a `message` (string) describing the error.
+
+Note: The API may have limits on the number of requests or data sizes, and frequent errors may occur when these limits are exceeded or when invalid data is provided.
+    ['- Number of routes/endpoints: 3', '- Number of request data models: 1 (NewFlower)', '- Number of response data models: 2 (Flower, Error)', '- Number of HTTP methods supported: 4 (GET, POST, GET, DELETE)']
+    
+    FAQ:
+    
+    What is the Flowershop API?
+
+The Flowershop API is a set of endpoints that allow you to manage the operations of a flower shop, such as retrieving a list of available flowers, adding new flowers, fetching details of a specific flower, and deleting flowers.
+
+How do I get a list of available flowers?
+
+To get a list of available flowers, send a GET request to the `/flowers` endpoint. The response will be an array of `Flower` objects.
+
+Can I filter the list of flowers by type?
+
+Yes, you can filter the list of flowers by type using the `type` query parameter when sending a GET request to the `/flowers` endpoint. The `type` parameter accepts an array of strings representing the flower types you want to filter by.
+
+How do I limit the number of results returned?
+
+You can use the `limit` query parameter when sending a GET request to the `/flowers` endpoint to limit the number of results returned. The `limit` parameter accepts an integer value representing the maximum number of results you want to retrieve.
+
+How do I add a new flower to the shop?
+
+To add a new flower to the shop, send a POST request to the `/flowers` endpoint with a request body containing a `NewFlower` object. The `NewFlower` object should have `name` (string), `type` (string), and `price` (float) properties. The response will be the created `Flower` object, including an `id` property.
+
+What information is included in the `Flower` object?
+
+The `Flower` object contains information about a flower, including `id` (integer), `name` (string), `type` (string), and `price` (float).
+
+How do I get details of a specific flower?
+
+To get details of a specific flower, send a GET request to the `/flowers/{id}` endpoint, replacing `{id}` with the ID of the flower you want to retrieve. The response will be a `Flower` object representing the requested flower.
+
+How do I delete a flower from the shop?
+
+To delete a flower from the shop, send a DELETE request to the `/flowers/{id}` endpoint, replacing `{id}` with the ID of the flower you want to delete. A successful response will have a status code of 204 (No Content).
+
+What happens if I try to retrieve or delete a flower that doesn't exist?
+
+If you try to retrieve or delete a flower that doesn't exist, the API will return an error response represented by an `Error` object, which includes a `code` (integer) and a `message` (string) describing the error.
+
+What is the structure of the `Error` object?
+
+The `Error` object has two required properties: `code` (integer) and `message` (string). The `code` property represents an error code, and the `message` property provides a human-readable description of the error.
+
+Are there any limits on the number of requests I can make?
+
+The API documentation doesn't specify any limits on the number of requests, but it's possible that the API may have rate limits or other restrictions in place to prevent abuse or overload. If you encounter any issues related to request limits, you should consult the API provider's documentation or contact their support.
+
+Can I use the API without authentication?
+
+The API documentation doesn't mention any authentication requirements, but it's possible that authentication may be required in a production environment. You should consult the API provider's documentation or contact their support for more information about authentication and authorization.
+
+What data formats does the API support for requests and responses?
+
+According to the API specification, the API supports JSON format for both requests and responses. The request body for adding a new flower should be in JSON format, and the responses for fetching flowers or error messages are also in JSON format.
+
+What HTTP methods are supported by the API?
+
+The Flowershop API supports four HTTP methods: GET, POST, GET, and DELETE. The `/flowers` endpoint supports GET and POST methods, while the `/flowers/{id}` endpoint supports GET and DELETE methods.
+
+Can I update an existing flower in the shop?
+
+The API specification doesn't include an endpoint or method for updating an existing flower. If you need to update a flower's information, you may need to first delete the existing flower and then add a new flower with the updated information.
+
+How do I handle errors returned by the API?
+
+When the API encounters an error, it will return an `Error` object in the response. This object contains a `code` (integer) property representing the error code and a `message` (string) property providing a human-readable description of the error. You should handle these errors appropriately in your application code.
+
+Can I use the API for commercial purposes?
+
+The API documentation doesn't specify any restrictions on commercial use, but you should review the terms of service provided by the API provider to ensure compliance with any usage policies or licensing agreements.
+
+Is there a way to test the API before integrating it into my application?
+
+The API documentation doesn't mention any testing or sandbox environments, but many API providers offer tools or environments for testing and exploring their APIs. You should check with the API provider for any available testing resources or tools.
+
+How can I get support or report issues with the API?
+
+According to the API specification, you can contact the API support team by sending an email to support@example.com or by visiting the support website at https://example.com/support. You can also review the terms of service at https://example.com/terms for more information.
+

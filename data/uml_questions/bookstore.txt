@@ -1,0 +1,89 @@
+
+    Documentation for uspto
+    
+    Description:
+    This is a set of APIs for managing books and authors. The GET /books endpoint retrieves a list of all available books. It does not require any request data, and the response contains an array of Book objects with properties like id, title, description, and published date. The POST /books endpoint is used to create a new book. The request body should be a BookInput object containing the title, authorId, description, and published date. The response contains the newly created Book object. The GET /books/{bookId} endpoint retrieves details of a specific book identified by its bookId parameter. The response contains the Book object with the provided bookId. The PUT /books/{bookId} endpoint updates an existing book with the specified bookId. The request body should be a BookInput object with the updated data. The DELETE /books/{bookId} endpoint deletes the book with the given bookId. For authors, the GET /authors endpoint retrieves a list of all authors. The response contains an array of Author objects with properties like id, name, and biography. The POST /authors endpoint creates a new author with data from the AuthorInput request body. The GET /authors/{authorId} endpoint retrieves details of a specific author identified by the authorId parameter. The PUT /authors/{authorId} endpoint updates an existing author with data from the AuthorInput request body. The DELETE /authors/{authorId} endpoint deletes the author with the given authorId. Potential errors include not finding a book or author with the provided ID, or attempting to create or update with invalid data.
+    ['- There are 8 routes/endpoints.', '- There are 2 request data models: BookInput and AuthorInput.', '- There are 2 response data models: Book and Author.', '- The Book model has 5 properties: id, title, description, authorId, and published.', '- The Author model has 3 properties: id, name, and biography.']
+    
+    FAQ:
+    
+    What is the purpose of this API?
+
+This API provides endpoints for managing books and authors in a library or book store system. It allows creating, reading, updating, and deleting book and author data.
+
+How do I retrieve a list of all available books?
+
+To retrieve a list of all available books, send a GET request to the /books endpoint. The response will contain an array of Book objects with details like id, title, description, and published date.
+
+What data is required to create a new book?
+
+To create a new book, send a POST request to the /books endpoint with a request body containing a BookInput object. The BookInput object should have properties like title, authorId, description, and published date.
+
+How do I update an existing book?
+
+To update an existing book, send a PUT request to the /books/{bookId} endpoint, replacing {bookId} with the ID of the book you want to update. The request body should contain a BookInput object with the updated data.
+
+How do I delete a book?
+
+To delete a book, send a DELETE request to the /books/{bookId} endpoint, replacing {bookId} with the ID of the book you want to delete.
+
+What properties does the Author model have?
+
+The Author model has three properties: id (integer), name (string), and biography (string).
+
+How do I create a new author?
+
+To create a new author, send a POST request to the /authors endpoint with a request body containing an AuthorInput object. The AuthorInput object should have properties like name and biography.
+
+How do I retrieve details of a specific author?
+
+To retrieve details of a specific author, send a GET request to the /authors/{authorId} endpoint, replacing {authorId} with the ID of the author you want to retrieve.
+
+What happens if I try to create a book with an invalid authorId?
+
+If you try to create a book with an authorId that does not correspond to an existing author, the API will likely return an error indicating that the provided authorId is invalid.
+
+Can I retrieve a list of books written by a specific author?
+
+This API does not provide a specific endpoint for retrieving a list of books written by a specific author. You would need to retrieve all books using the GET /books endpoint and filter the results based on the authorId property.
+
+What data format should be used for the request and response bodies?
+
+Based on the provided information, it seems that the request and response bodies should be in JSON format, with the data structures matching the BookInput, Book, AuthorInput, and Author models.
+
+How do I handle errors or invalid data when creating or updating a book or author?
+
+The API does not provide specific details on error handling, but it is recommended to validate the request data before attempting to create or update a book or author. If the provided data is invalid or missing required fields, the API will likely return an error response indicating the issue.
+
+Can I update the authorId of an existing book?
+
+The provided information does not explicitly mention whether updating the authorId of an existing book is allowed or not. It might be possible through the PUT /books/{bookId} endpoint by including the new authorId in the BookInput request body, but this should be confirmed with the API documentation or developers.
+
+Are there any limits on the number of books or authors that can be created or retrieved?
+
+The provided information does not mention any specific limits on the number of books or authors that can be created or retrieved. However, it is common for APIs to have rate limiting or resource constraints, so it is recommended to check the documentation or contact the API developers for any such limitations.
+
+How do I handle errors when deleting a book or author?
+
+The API does not provide specific details on error handling for delete operations. However, common errors could include attempting to delete a book or author that does not exist (returning a not found error), or encountering authorization or permission issues (returning an unauthorized or forbidden error).
+
+Can I sort or filter the list of books or authors returned by the GET endpoints?
+
+The provided information does not mention any sorting or filtering capabilities for the GET /books and GET /authors endpoints. It is possible that additional query parameters or request headers might be required for such functionality, but this should be confirmed with the API documentation or developers.
+
+Are there any specific date formats required for the published property of the Book model?
+
+The provided information does not specify the date format required for the published property of the Book model. It is generally recommended to follow a standard date format like ISO 8601 (e.g., YYYY-MM-DD) or consult the API documentation for the expected date format.
+
+Can I retrieve a list of authors without their biography details?
+
+The provided information does not mention any specific options or parameters for controlling the fields included in the response for the GET /authors endpoint. If you only need the id and name properties, you might need to check the API documentation or contact the developers to see if there is a way to exclude the biography field from the response.
+
+How do I handle scenarios where the same book or author already exists?
+
+The provided information does not mention how the API handles scenarios where you attempt to create a book or author that already exists (e.g., with the same title or name). It is likely that the API will return an error indicating the duplicate entry, but the specific error response and behavior should be confirmed with the API documentation or developers.
+
+Are there any authentication or authorization requirements for using these APIs?
+
+The provided information does not mention any authentication or authorization requirements for using these APIs. However, it is common for APIs to require some form of authentication (e.g., API key, OAuth, etc.) or have role-based access controls. You should consult the API documentation or contact the developers to understand any authentication or authorization requirements.
+

@@ -1,0 +1,89 @@
+
+    Documentation for uspto
+    
+    Description:
+    This API provides access to datasets and records through various endpoints. The GET /datasets endpoint lists all available datasets. The GET /{dataset}/{version}/fields endpoint returns the searchable fields for a specific dataset and version. The POST /{dataset}/{version}/records endpoint allows performing a search on a dataset and version, with criteria such as search terms, start index, and number of rows. The responses include lists of searchable fields, search results, and error codes (200 for success, 404 for not found). There are data models for the dataset list, searchable fields, search results, and search request body.
+    - Number of routes/endpoints: 3 (GET /datasets, GET /{dataset}/{version}/fields, POST /{dataset}/{version}/records)
+- Number of request data models: 1 (perform-search Request)
+- Number of response data models: 4 (dataSetList, list-searchable-fields 200, list-searchable-fields 404, perform-search 200, perform-search 404)
+- The dataSetList model contains a total count of datasets
+- The perform-search Request model has criteria, start index, and number of rows fields
+    
+    FAQ:
+    
+    What is the purpose of this API?
+
+This API provides access to datasets and allows searching within them for records matching specified criteria.
+
+How do I get a list of available datasets?
+
+Send a GET request to the /datasets endpoint. The response will be a dataSetList object containing a list of dataset keys.
+
+How do I find out what fields are searchable for a particular dataset and version?
+
+Send a GET request to the /{dataset}/{version}/fields endpoint, replacing {dataset} and {version} with the desired dataset and version. The response will contain a list of searchable fields.
+
+What information do I need to provide to search within a dataset?
+
+To perform a search, send a POST request to the /{dataset}/{version}/records endpoint with a request body containing the search criteria, start index, and number of rows to return.
+
+What does the search criteria field contain?
+
+The search criteria field is a string that specifies the terms or conditions to search for within the dataset records.
+
+What happens if I provide an invalid dataset or version in the request URL?
+
+If the requested dataset or version is not found, the API will respond with a 404 error and a list-searchable-fields object with an error message.
+
+What does the response contain when a search is successful?
+
+A successful search response (status code 200) contains a perform-search object with a map of search results, including the matching records.
+
+Are there any limits on the number of search results that can be returned?
+
+Yes, the perform-search Request model includes a rows field that specifies the maximum number of search results to return.
+
+How do I handle errors from the API?
+
+The API uses standard HTTP status codes to indicate success (200) or failure (404 for not found). Error responses will contain additional information about the error in the response body.
+
+Can I get documentation or metadata about the datasets and their fields?
+
+The dataSetList.apis object contains metadata fields like apiUri and apiDocumentationUri that may provide additional information about each dataset.
+
+How do I specify the start index for the search results?
+
+The perform-search Request model includes a start field that specifies the index of the first search result to return (0-based).
+
+Are there any authentication or authorization requirements for using this API?
+
+The provided information does not mention any authentication or authorization requirements, but production APIs may have such requirements documented elsewhere.
+
+Can I sort or filter the search results in any way?
+
+The provided information does not mention any sorting or filtering capabilities for search results, but such features may be available and documented elsewhere.
+
+How do I handle scenarios where no search results are found?
+
+If no search results match the specified criteria, the perform-search response will likely contain an empty map or list of results.
+
+Are there any versioning considerations for this API?
+
+Yes, the API endpoints include a {version} parameter, indicating that datasets may have different versions with potentially different searchable fields or data structures.
+
+Can I search across multiple datasets or versions in a single request?
+
+Based on the provided information, it does not appear possible to search across multiple datasets or versions in a single request. Separate requests would need to be made for each dataset and version.
+
+How do I handle large datasets or result sets that may exceed the maximum number of rows?
+
+For large datasets or result sets, you may need to implement pagination by making multiple requests with different start index values and combining the results.
+
+Are there any performance considerations or best practices for using this API?
+
+While not explicitly mentioned, it's generally recommended to follow best practices such as rate limiting, caching responses when appropriate, and efficient use of resources to avoid overloading the API.
+
+Can I programmatically create, update, or delete datasets or records through this API?
+
+The provided information only covers searching and retrieving datasets and records. There are no endpoints or request/response models shown for creating, updating, or deleting data.
+
