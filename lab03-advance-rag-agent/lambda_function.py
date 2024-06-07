@@ -63,6 +63,67 @@ the information provided in the OpenAPI YAML file. Do not include any additional
 code beyond what is necessary to fulfill the user's request.
 """
 
+
+uml_generation = """
+Your task is to generate a UML Sequential plantuml code snippet based on a given OpenAPI YAML file . The
+YAML file will be provided in the following format:
+
+<YAML_FILE>
+{YAML_FILE}
+</YAML_FILE>
+
+Here are the steps you should follow:
+
+1. Read the provided <yaml> carefully and understand the APIs, their
+endpoints, request/response data structures, and other details.
+
+<yaml>
+{YAML_FILE}
+</yaml>
+
+2. In the <PlantUML> field, generate the UML Sequential Plantuml code generated after looking at YAML file. Make sure you are looking at all the elements of YAML file as you generate the plantuml code.
+
+3. Structure your JSON output as follows:
+
+{
+"PlantUML": "<PlantUML>"
+}
+
+4. Replace <PlantUML> with the appropriate content you generated in the previous steps.
+
+Please provide your response in JSON format only, without any additional explanations or comments.
+"""
+
+uml_generation1 = """
+Your task is to generate a UML Sequential plantuml code snippet based on a given OpenAPI YAML file . The
+YAML file will be provided in the following format:
+
+<YAML_FILE>
+{YAML_FILE}
+</YAML_FILE>
+
+Here are the steps you should follow:
+
+1. Read the provided <yaml> carefully and understand the APIs, their
+endpoints, request/response data structures, and other details.
+
+<yaml>
+{YAML_FILE}
+</yaml>
+
+2. Format the generated code snippet using markdown code blocks, like this:
+
+```<programming_language>
+<code_snippet>
+```
+
+This will allow the user to easily copy and paste the code snippet.
+
+
+Remember, your goal is to generate a code snippet that accurately reflects input OpenAPI YAML in UML Sequential PlantUML code. Do not include any additional functionality or
+code beyond what is necessary to fulfill the user's request.
+"""
+
 def get_named_parameter(event, name):
     """
     Get a parameter from the lambda event
@@ -75,9 +136,34 @@ def get_uml_diagram(yml_code):
 
     Save image to S3
     """
+    content = []
 
-    return {"imageUrl":"s3://test-bucket/prefix/image.jpg"}
+    prompt = uml_generation1.replace("{YAML_FILE}",yml_code)
 
+    query_obj = {"type": "text", "text": prompt}
+
+    content.append(query_obj)
+
+    body = json.dumps(
+        {
+            "anthropic_version": "bedrock-2023-05-31",
+            "max_tokens": 4096,
+            "messages": [
+                {
+                    "role": "user",
+                    "content": content,
+                }
+            ],
+        }
+    )
+    
+    response = bedrock_runtime.invoke_model(
+        modelId="anthropic.claude-3-sonnet-20240229-v1:0",
+        body=body)
+    
+    response_body = json.loads(response.get("body").read())
+    
+    return {"codeBody": response_body["content"][0]["text"]}
 
 def get_unit_test_code(yml_code, query):
     """
@@ -126,6 +212,7 @@ def lambda_handler(event, context):
 
     if function == 'get_uml_diagram':
         yml_code = get_named_parameter(event, "yml_body")
+        
         if yml_code:
             response = get_uml_diagram(yml_code)
             responseBody = {'TEXT': {'body': json.dumps(response)}}
