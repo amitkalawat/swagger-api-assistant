@@ -22,7 +22,7 @@ optimize the performance and robustness of your RAG solution at an enterprise-le
 scale. Simultaneously, you will delve deep into the AWS Generative AI stack, learning how you can leverage services 
 like Amazon Kendra, Amazon Bedrock, and Amazon SageMaker to accelerate your generative AI journey.
 
-![aws genai stack](static/iaws-genai-stack.png)
+![aws genai stack](static/aws-genai-stack.png)
 
 ## Managed RAG Workshop
 We will begin by exploring Amazon Q, a managed RAG assistant service that simplifies the deployment and 
